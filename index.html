@@ -8,9 +8,49 @@
         <link rel="stylesheet" type="text/css" href=""/>
     </head>
     <body ng-app="DebtDescent" ng-controller="DebtController">
-        {{1+4}}
-        Content
+        <form>
+            Enter your loan amount:
+            <input type="number" min="0" ng-model="initialPrinciple"/>
+            <br />
+            Enter your interest rate:
+            <input type="number" ng-model="interestRate"/>
+            <br />
+            Enter your loan term:
+            <input type="number" ng-model="loanTerm"/>
+            <br />
+            Enter your minimum payment:
+            <input type="number" ng-model="minimumPayment"/>
+            <br />
+            Enter your total monthly payment:
+            <input type="number" ng-model="totalPayment"/>
+            <br /><br />
+            <button onclick="showTable();" ng-click="Amortization(initialPrinciple, interestRate, loanTerm, minimumPayment, totalPayment)">Generate Schedule</button>    
+        </form>
+        <table id="amortizationSchedule">
+            <th>Remaining</th>
+            <th>Amt paid</th>
+            <th>principle</th>
+            <th>interest</th>
+            <tbody ng-repeat="payment in schedule">
+                <tr>
+                    <td>{{payment.principleRemaining | currency}}</td>
+                    <td>{{payment.paymentAmount | currency}}</td>
+                    <td>{{payment.towardPrinciple | currency}}</td>
+                    <td>{{payment.towardInterest | currency}}</td>
+                </tr>
+            </tbody>
+        </table>
+        
         <script src="app.js"></script>
+        <script src="Controller.js"></script>
+        <script>
+            var table = document.getElementById("amortizationSchedule");
+            table.style.visibility = "hidden";
+            
+            function showTable(){
+                table.style.visibility = "visible";
+            }
+        </script>
     </body>
 
 </html>
