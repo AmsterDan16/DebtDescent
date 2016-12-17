@@ -10,33 +10,41 @@
     <body ng-app="DebtDescent" ng-controller="DebtController">
         <form>
             Enter your loan amount:
-            <input type="number" min="0" ng-model="initialPrinciple"/>
+            <input type="number" min="0" ng-model="initialPrinciple">
             <br />
             Enter your interest rate:
-            <input type="number" ng-model="interestRate"/>
+            <input type="number" ng-model="interestRate">
             <br />
             Enter your loan term:
-            <input type="number" ng-model="loanTerm"/>
+            <input type="number" ng-model="loanTerm" ng-change="CalculateMinimumPayment()">
             <br />
-            Enter your minimum payment:
-            <input type="number" ng-model="minimumPayment"/>
+            Minimum payment:
+            {{minimumMonthlyPayment | currency}}
             <br />
             Enter your total monthly payment:
-            <input type="number" ng-model="totalPayment"/>
+            <input type="number" ng-model="totalMonthlyPayment">
             <br /><br />
-            <button onclick="showTable();" ng-click="Amortization(initialPrinciple, interestRate, loanTerm, minimumPayment, totalPayment)">Generate Schedule</button>    
+            <button onclick="showTable();" ng-click="Amortization(initialPrinciple, interestRate, loanTerm, minimumPayment, totalMonthlyPayment)">Generate Schedule</button>    
         </form>
         <table id="amortizationSchedule">
             <th>Remaining</th>
             <th>Amt paid</th>
             <th>principle</th>
             <th>interest</th>
+            <th>interest paid</th>
+            <th>total paid</th>
             <tbody ng-repeat="payment in schedule">
                 <tr>
                     <td>{{payment.principleRemaining | currency}}</td>
                     <td>{{payment.paymentAmount | currency}}</td>
                     <td>{{payment.towardPrinciple | currency}}</td>
                     <td>{{payment.towardInterest | currency}}</td>
+                    <td>{{payment.currentInterestPaid | currency}}</td>
+                    <td>{{payment.currentPaidOverall | currency}}</td>
+<!--
+                    <td>{{totalInterestPaid}}</td>
+                    <td>{{totalPaid}}</td>
+-->
                 </tr>
             </tbody>
         </table>
