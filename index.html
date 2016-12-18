@@ -27,6 +27,7 @@
             <button onclick="showTable();" ng-click="Amortization(initialPrinciple, interestRate, loanTerm, totalMonthlyPayment)">Generate Schedule</button>    
         </form>
         <table id="amortizationSchedule">
+            <th>Date</th>
             <th>Remaining</th>
             <th>Amt paid</th>
             <th>principle</th>
@@ -35,6 +36,7 @@
             <th>total paid</th>
             <tbody ng-repeat="payment in schedule">
                 <tr>
+                    <td>{{payment.date}}</td>
                     <td>{{payment.principleRemaining | currency}}</td>
                     <td>{{payment.paymentAmount | currency}}</td>
                     <td>{{payment.towardPrinciple | currency}}</td>

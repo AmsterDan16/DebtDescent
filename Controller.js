@@ -27,11 +27,12 @@ app.controller('DebtController', ['$scope', function($scope){
         towardInterest:0.00,
         towardPrinciple:0.00,
         currentPaidOverall:0.00,
-        currentInterestPaid:0.00
-        //,date: Date(month, year)
+        currentInterestPaid:0.00,
+        date: ""
     };
 
     $scope.schedule = [];
+    $scope.loans = [];
     
     function CalcExponent(base, power){
         var result = 1;
@@ -39,6 +40,15 @@ app.controller('DebtController', ['$scope', function($scope){
             result *= base;   
         }
         return result;
+    }
+    
+    /*
+        in: unformatted date object
+        out: string in mmm yyyy format (e.g. Dec 2016)
+    */
+    function formatDate(unformattedDate){
+        var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];  
+        return months[unformattedDate.getMonth()].substring(0,3) + " " + unformattedDate.getFullYear(); 
     }
     
     $scope.CalculateMinimumPayment = function(){
@@ -57,10 +67,13 @@ app.controller('DebtController', ['$scope', function($scope){
                 totalMonthlyPayment = $scope.minimumMonthlyPayment;
             }
             var monthlyInterestRate = (interestRate/100) / 12;
-            var currentDate = Date();//date.currentdate(mm/yyyy);
+            var currentDate = new Date();
+            currentDate.setMonth(currentDate.getMonth() + 1);
             var previousPaymentTotal = 0.00;
             var previousInterestTotal = 0.00;
-            while(principle > 0){
+            //if condition is (principle >= 0), it causes infinite loop
+            while(principle >= 0.01){
+                console.log(principle);
                 var currentPayment = angular.copy(payment);
                 currentPayment.paymentAmount = totalMonthlyPayment;
                 //$scope.totalPaid = $scope.totalPaid + currentPayment.paymentAmount;
@@ -68,8 +81,9 @@ app.controller('DebtController', ['$scope', function($scope){
                 currentPayment.towardInterest = principle * monthlyInterestRate;
                 //$scope.totalInterestPaid = $scope.totalInterestPaid + currentPayment.towardInterest;
                 currentPayment.currentInterestPaid = previousInterestTotal + currentPayment.towardInterest;
-                currentPayment.towardPrinciple = totalMonthlyPayment - currentPayment.towardInterest;
+                currentPayment.towardPrinciple = currentPayment.paymentAmount - currentPayment.towardInterest;
                 currentPayment.principleRemaining = principle - currentPayment.towardPrinciple;
+                currentPayment.date = formatDate(currentDate);
                 if(currentPayment.principleRemaining < 0){
                     //subtract (add) the amount less than zero from the payment amount and recalculate
                     currentPayment.paymentAmount = currentPayment.paymentAmount + currentPayment.principleRemaining;
@@ -77,15 +91,13 @@ app.controller('DebtController', ['$scope', function($scope){
                     currentPayment.towardPrinciple = currentPayment.paymentAmount - currentPayment.towardInterest;
                     currentPayment.principleRemaining = 0;
                 }
-                //currentPayment.date = currentDate;
-                //currentDate += 1;
+
                 principle = currentPayment.principleRemaining;
                 previousPaymentTotal += currentPayment.paymentAmount;
                 previousInterestTotal += currentPayment.towardInterest;
-                //alert(principle);
+                currentDate.setMonth(currentDate.getMonth() + 1);//new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1);
                 $scope.schedule.push(currentPayment);
             }
-            //alert($scope.schedule.length);
 
     };
 }]);
