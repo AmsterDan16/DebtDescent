@@ -33,29 +33,31 @@ app.controller('DebtController', ['$scope', function($scope){
 
     $scope.schedule = [];
     
-    $scope.CalcExponent = function(base, power){
+    function CalcExponent(base, power){
         var result = 1;
         for(var i = 0; i < power; i++){
             result *= base;   
         }
         return result;
-    };
+    }
     
     $scope.CalculateMinimumPayment = function(){
         //payment = (monthlyInterest * initialLoan * (1 + monthlyInterest)^  
-        var numerator = $scope.interestRate * $scope.initialPrinciple * CalcExponent((1 + $scope.interestRate), $scope.loanTerm);
-        //alert(numerator);
-        $scope.minimumMonthlyPayment = numerator / (CalcExponent((1 + $scope.interestRate), $scope.loanTerm) - 1);
+        var monthlyInterestRate = ($scope.interestRate/100) / 12;
+        var numerator = monthlyInterestRate * $scope.initialPrinciple * CalcExponent((1 + monthlyInterestRate), $scope.loanTerm);
+        //alert($scope.loanTerm);
+        //$scope.minimumMonthlyPayment = $scope.interestRate * $scope.initialPrinciple * CalcExponent((1 + $scope.interestRate), $scope.loanTerm);
+        $scope.minimumMonthlyPayment = numerator / (CalcExponent((1 + monthlyInterestRate), $scope.loanTerm) - 1);
     };
 
     //on form, make total's minimum value be equal to minimumPayment field, but field is not required
-    $scope.Amortization = function(principle, interestRate, term, minimumPayment, totalMonthlyPayment){
+    $scope.Amortization = function(principle, interestRate, term, totalMonthlyPayment){
+            $scope.schedule = [];
             if(totalMonthlyPayment === undefined){
-                totalMonthlyPayment = minimumPayment;
+                totalMonthlyPayment = $scope.minimumMonthlyPayment;
             }
             var monthlyInterestRate = (interestRate/100) / 12;
             var currentDate = Date();//date.currentdate(mm/yyyy);
-            //alert($scope.schedule.length);
             var previousPaymentTotal = 0.00;
             var previousInterestTotal = 0.00;
             while(principle > 0){
@@ -71,7 +73,6 @@ app.controller('DebtController', ['$scope', function($scope){
                 if(currentPayment.principleRemaining < 0){
                     //subtract (add) the amount less than zero from the payment amount and recalculate
                     currentPayment.paymentAmount = currentPayment.paymentAmount + currentPayment.principleRemaining;
-                    //$scope.totalPaid = $scope.totalPaid + currentPayment.principleRemaining;
                     currentPayment.currentPaidOverall += currentPayment.principleRemaining;
                     currentPayment.towardPrinciple = currentPayment.paymentAmount - currentPayment.towardInterest;
                     currentPayment.principleRemaining = 0;

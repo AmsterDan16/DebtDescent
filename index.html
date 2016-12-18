@@ -10,10 +10,10 @@
     <body ng-app="DebtDescent" ng-controller="DebtController">
         <form>
             Enter your loan amount:
-            <input type="number" min="0" ng-model="initialPrinciple">
+            <input type="number" min="0" step="any" ng-model="initialPrinciple" ng-change="CalculateMinimumPayment()">
             <br />
             Enter your interest rate:
-            <input type="number" ng-model="interestRate">
+            <input type="number" step="any" ng-model="interestRate" ng-change="CalculateMinimumPayment()">
             <br />
             Enter your loan term:
             <input type="number" ng-model="loanTerm" ng-change="CalculateMinimumPayment()">
@@ -22,9 +22,9 @@
             {{minimumMonthlyPayment | currency}}
             <br />
             Enter your total monthly payment:
-            <input type="number" ng-model="totalMonthlyPayment">
+            <input type="number" step="any" ng-model="totalMonthlyPayment">
             <br /><br />
-            <button onclick="showTable();" ng-click="Amortization(initialPrinciple, interestRate, loanTerm, minimumPayment, totalMonthlyPayment)">Generate Schedule</button>    
+            <button onclick="showTable();" ng-click="Amortization(initialPrinciple, interestRate, loanTerm, totalMonthlyPayment)">Generate Schedule</button>    
         </form>
         <table id="amortizationSchedule">
             <th>Remaining</th>
