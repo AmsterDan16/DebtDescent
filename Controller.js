@@ -8,16 +8,15 @@ app.controller('DebtController', ['$scope', function($scope){
     $scope.totalMonthlyPayment;
     $scope.totalInterestPaid = 0;
     $scope.totalPaid = 0;
-//    $scope.CreateAmoritizationSchedule = function(loanAmount, minimumPayment){
-//        while(loanAmount > 0){
-//            loanAmount = loanAmount - minimumPayment;   
-//            $scope.numberOfMonthsTilPayoff += 1;
-//        }
-//    }
-    $scope.loan = {
-        principle:0,
+    $scope.schedule = [];
+    $scope.loans = [];
+
+    var loan = {
+        name:"loan",
+        principle:0.00,
         term:0,
-        interestRate:0,
+        interestRate:0.00,
+        minimumMonthlyPayment:0.00,
         schedule: []
     };
 
@@ -30,9 +29,16 @@ app.controller('DebtController', ['$scope', function($scope){
         currentInterestPaid:0.00,
         date: ""
     };
-
-    $scope.schedule = [];
-    $scope.loans = [];
+    
+    $scope.Init = function(){
+        var firstLoan = angular.copy(loan); 
+        $scope.loans.push(firstLoan);
+    }
+    
+    $scope.AddLoan = function(){
+        var additionalLoan = angular.copy(loan);
+        $scope.loans.push(additionalLoan);
+    }
     
     function CalcExponent(base, power){
         var result = 1;
@@ -51,14 +57,14 @@ app.controller('DebtController', ['$scope', function($scope){
         return months[unformattedDate.getMonth()].substring(0,3) + " " + unformattedDate.getFullYear(); 
     }
     
-    $scope.CalculateMinimumPayment = function(){
-        //payment = (monthlyInterest * initialLoan * (1 + monthlyInterest)^  
-        var monthlyInterestRate = ($scope.interestRate/100) / 12;
-        var numerator = monthlyInterestRate * $scope.initialPrinciple * CalcExponent((1 + monthlyInterestRate), $scope.loanTerm);
-        //alert($scope.loanTerm);
-        //$scope.minimumMonthlyPayment = $scope.interestRate * $scope.initialPrinciple * CalcExponent((1 + $scope.interestRate), $scope.loanTerm);
-        $scope.minimumMonthlyPayment = numerator / (CalcExponent((1 + monthlyInterestRate), $scope.loanTerm) - 1);
-    };
+//    $scope.CalculateMinimumPayment = function(){
+//        //payment = (monthlyInterest * initialLoan * (1 + monthlyInterest)^  
+//        var monthlyInterestRate = ($scope.interestRate/100) / 12;
+//        var numerator = monthlyInterestRate * $scope.initialPrinciple * CalcExponent((1 + monthlyInterestRate), $scope.loanTerm);
+//        //alert($scope.loanTerm);
+//        //$scope.minimumMonthlyPayment = $scope.interestRate * $scope.initialPrinciple * CalcExponent((1 + $scope.interestRate), $scope.loanTerm);
+//        $scope.minimumMonthlyPayment = numerator / (CalcExponent((1 + monthlyInterestRate), $scope.loanTerm) - 1);
+//    };
 
     //on form, make total's minimum value be equal to minimumPayment field, but field is not required
     $scope.Amortization = function(principle, interestRate, term, totalMonthlyPayment){
@@ -100,4 +106,5 @@ app.controller('DebtController', ['$scope', function($scope){
             }
 
     };
+    $scope.Init();
 }]);

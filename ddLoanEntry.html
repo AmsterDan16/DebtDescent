@@ -1,0 +1,30 @@
+<table>
+    <tr>
+        <td>
+            Name:
+            <input type="text" ng-model="name">
+        </td>
+        <td>
+            Amount:
+            <input type="number" min="0" step="any" ng-model="initialPrinciple" ng-change="CalculateMinimumPayment()">
+        </td>
+        <td>
+            Interest Rate:
+            <input type="number" step="any" ng-model="interestRate" ng-change="CalculateMinimumPayment()">
+        </td>
+        <td>
+            Term:
+            <input type="number" ng-model="loanTerm" ng-change="CalculateMinimumPayment()">
+        </td>
+        <td>
+            Min payment:
+            {{minimumMonthlyPayment | currency}}
+        </td>
+<!--
+        <td>
+            Enter your total monthly payment:
+            <input type="number" step="any" ng-model="totalMonthlyPayment">
+        </td>
+-->
+    </tr>
+</table>

@@ -9,40 +9,30 @@
     </head>
     <body ng-app="DebtDescent" ng-controller="DebtController">
         <form>
-            Enter your loan amount:
-            <input type="number" min="0" step="any" ng-model="initialPrinciple" ng-change="CalculateMinimumPayment()">
-            <br />
-            Enter your interest rate:
-            <input type="number" step="any" ng-model="interestRate" ng-change="CalculateMinimumPayment()">
-            <br />
-            Enter your loan term:
-            <input type="number" ng-model="loanTerm" ng-change="CalculateMinimumPayment()">
-            <br />
-            Minimum payment:
-            {{minimumMonthlyPayment | currency}}
-            <br />
-            Enter your total monthly payment:
-            <input type="number" step="any" ng-model="totalMonthlyPayment">
+            <div ng-repeat="loan in loans">
+                <dd-loan-entry loans="loans" loan="loan"></dd-loan-entry>
+            </div> 
             <br /><br />
-            <button onclick="showTable();" ng-click="Amortization(initialPrinciple, interestRate, loanTerm, totalMonthlyPayment)">Generate Schedule</button>    
+            <button onclick="showTable();" ng-click="Amortization(initialPrinciple, interestRate, loanTerm, totalMonthlyPayment)">Generate Schedule</button> 
+            <button ng-click="AddLoan()">Add Another</button>
         </form>
         <table id="amortizationSchedule">
-            <th>Date</th>
-            <th>Remaining</th>
-            <th>Amt paid</th>
+            <th>Date</th>  
+            <th>Payment</th>
             <th>principle</th>
             <th>interest</th>
-            <th>interest paid</th>
-            <th>total paid</th>
+<!--            <th>interest paid</th>-->
+            <th>Balance</th>
+<!--            <th>total paid</th>-->
             <tbody ng-repeat="payment in schedule">
                 <tr>
                     <td>{{payment.date}}</td>
-                    <td>{{payment.principleRemaining | currency}}</td>
                     <td>{{payment.paymentAmount | currency}}</td>
                     <td>{{payment.towardPrinciple | currency}}</td>
                     <td>{{payment.towardInterest | currency}}</td>
-                    <td>{{payment.currentInterestPaid | currency}}</td>
-                    <td>{{payment.currentPaidOverall | currency}}</td>
+<!--                    <td>{{payment.currentInterestPaid | currency}}</td>-->
+                    <td>{{payment.principleRemaining | currency}}</td>
+<!--                    <td>{{payment.currentPaidOverall | currency}}</td>-->
 <!--
                     <td>{{totalInterestPaid}}</td>
                     <td>{{totalPaid}}</td>
@@ -53,6 +43,7 @@
         
         <script src="app.js"></script>
         <script src="Controller.js"></script>
+        <script src="ddLoanEntry.js"></script>
         <script>
             var table = document.getElementById("amortizationSchedule");
             table.style.visibility = "hidden";
