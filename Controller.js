@@ -1,3 +1,4 @@
+//load(helpers.js);
 app.controller('DebtController', ['$scope', function($scope){
     $scope.minimumMonthlyPayment = 0.00;
     $scope.numberOfMonthsTilPayoff = 0;
@@ -12,7 +13,7 @@ app.controller('DebtController', ['$scope', function($scope){
     $scope.loans = [];
 
     var loan = {
-        name:"loan",
+        name:"",
         principle:0.00,
         term:0,
         interestRate:0.00,
@@ -39,15 +40,6 @@ app.controller('DebtController', ['$scope', function($scope){
         var additionalLoan = angular.copy(loan);
         $scope.loans.push(additionalLoan);
     }
-    
-    function CalcExponent(base, power){
-        var result = 1;
-        for(var i = 0; i < power; i++){
-            result *= base;   
-        }
-        return result;
-    }
-    
     /*
         in: unformatted date object
         out: string in mmm yyyy format (e.g. Dec 2016)
@@ -56,6 +48,8 @@ app.controller('DebtController', ['$scope', function($scope){
         var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];  
         return months[unformattedDate.getMonth()].substring(0,3) + " " + unformattedDate.getFullYear(); 
     }
+
+    
     
 //    $scope.CalculateMinimumPayment = function(){
 //        //payment = (monthlyInterest * initialLoan * (1 + monthlyInterest)^  

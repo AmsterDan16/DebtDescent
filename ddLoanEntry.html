@@ -1,25 +1,29 @@
 <table>
     <tr>
         <td>
+            <div ng-click="RemoveLoan()">X</div>
+        </td>
+        <td>
             Name:
-            <input type="text" ng-model="name">
+            <input type="text" ng-model="loan.name" placeholder="Loan Name">
         </td>
         <td>
             Amount:
-            <input type="number" min="0" step="any" ng-model="initialPrinciple" ng-change="CalculateMinimumPayment()">
+            <input type="number" min="0" step="any" ng-model="loan.initialPrinciple" ng-change="CalculateMinimumPayment(loan)">
         </td>
         <td>
             Interest Rate:
-            <input type="number" step="any" ng-model="interestRate" ng-change="CalculateMinimumPayment()">
+            <input type="number" step="any" ng-model="loan.interestRate" ng-change="CalculateMinimumPayment(loan)">
         </td>
         <td>
             Term:
-            <input type="number" ng-model="loanTerm" ng-change="CalculateMinimumPayment()">
+            <input type="number" ng-model="loan.loanTerm" ng-change="CalculateMinimumPayment(loan)">
         </td>
         <td>
             Min payment:
-            {{minimumMonthlyPayment | currency}}
+            {{loan.minimumMonthlyPayment | currency}}
         </td>
+        
 <!--
         <td>
             Enter your total monthly payment:
