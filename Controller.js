@@ -59,6 +59,18 @@ app.controller('DebtController', ['$scope', function($scope){
 //        //$scope.minimumMonthlyPayment = $scope.interestRate * $scope.initialPrinciple * CalcExponent((1 + $scope.interestRate), $scope.loanTerm);
 //        $scope.minimumMonthlyPayment = numerator / (CalcExponent((1 + monthlyInterestRate), $scope.loanTerm) - 1);
 //    };
+    
+    $scope.GenerateSchedules = function(){
+        if($scope.loans.length == 0){
+            alert("No debt found! Please enter 1 or more debts.");
+        }else{
+            var loan;
+         for(var i = 0; i < $scope.loans.length; i++){
+             loan = $scope.loans[i];
+             $scope.Amortization(loan.principle, loan.interestRate, loan.term, loan.minimumMonthlyPayment);
+         }
+        }    
+    }
 
     //on form, make total's minimum value be equal to minimumPayment field, but field is not required
     $scope.Amortization = function(principle, interestRate, term, totalMonthlyPayment){
