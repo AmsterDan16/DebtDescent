@@ -11,8 +11,8 @@ app.directive('ddLoanEntry', function(){
         link: function(scope, element, attrs){
             scope.CalculateMinimumPayment = function(loan){
                 var monthlyInterestRate = (loan.interestRate/100) / 12;
-                var numerator = monthlyInterestRate * loan.initialPrinciple * CalcExponent((1 + monthlyInterestRate), loan.loanTerm);
-                loan.minimumMonthlyPayment = numerator / (CalcExponent((1 + monthlyInterestRate), loan.loanTerm) - 1);
+                var numerator = monthlyInterestRate * loan.principle * CalcExponent((1 + monthlyInterestRate), loan.term);
+                loan.minimumMonthlyPayment = numerator / (CalcExponent((1 + monthlyInterestRate), loan.term) - 1);
             };
             
             /*

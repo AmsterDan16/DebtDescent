@@ -17,15 +17,33 @@
 <!--            <button onclick="showTable();" ng-click="Amortization(initialPrinciple, interestRate, loanTerm, totalMonthlyPayment)">Generate Schedule</button> -->
             <button ng-click="AddLoan()">Add Another</button>
         </form>
-<!--
-        <div ng-repeat="loanSchedule in loans">
+        <div> 
             <table id="amortizationSchedule">
-                <th>Date</th>  
-                <th>Payment</th>
-                <th>principle</th>
-                <th>interest</th>
-                <th>Balance</th>
-                <tbody ng-repeat="payment in loanSchedule">
+                <tbody ng-repeat="loan in loans">
+                    <tr>
+<!--                        <td>{{loan.principle | currency}}</td>-->
+                        <td>
+                            <table>
+                                <th>Date</th>  
+                                <th>Payment</th>
+                                <th>principle</th>
+                                <th>interest</th>
+                                <th>Balance</th>
+                                <tbody ng-repeat="payment in loan.schedule">
+                                    <tr>
+                                        <td>{{payment.date}}</td>
+                                        <td>{{payment.paymentAmount | currency}}</td>
+                                        <td>{{payment.towardPrinciple | currency}}</td>
+                                        <td>{{payment.towardInterest | currency}}</td>
+                                        <td>{{payment.principleRemaining | currency}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                </tbody>
+<!--
+                <tbody ng-repeat="payment in loan.schedule">
                     <tr>
                         <td>{{payment.date}}</td>
                         <td>{{payment.paymentAmount | currency}}</td>
@@ -35,19 +53,19 @@
 
                     </tr>
                 </tbody>
+-->
             </table>
         </div>
--->
         
         <script src="app.js"></script>
         <script src="Controller.js"></script>
         <script src="ddLoanEntry.js"></script>
         <script>
-            //var table = document.getElementById("amortizationSchedule");
-            //table.style.visibility = "hidden";
+            var table = document.getElementById("amortizationSchedule");
+            table.style.visibility = "hidden";
             
             function showTable(){
-                //table.style.visibility = "visible";
+                table.style.visibility = "visible";
             }
         </script>
     </body>

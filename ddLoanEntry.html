@@ -9,7 +9,7 @@
         </td>
         <td>
             Amount:
-            <input type="number" min="0" step="any" ng-model="loan.initialPrinciple" ng-change="CalculateMinimumPayment(loan)">
+            <input type="number" min="0" step="any" ng-model="loan.principle" ng-change="CalculateMinimumPayment(loan)">
         </td>
         <td>
             Interest Rate:
@@ -17,7 +17,7 @@
         </td>
         <td>
             Term:
-            <input type="number" ng-model="loan.loanTerm" ng-change="CalculateMinimumPayment(loan)">
+            <input type="number" ng-model="loan.term" ng-change="CalculateMinimumPayment(loan)">
         </td>
         <td>
             Min payment:

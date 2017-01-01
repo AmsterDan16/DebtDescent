@@ -50,34 +50,40 @@ app.controller('DebtController', ['$scope', function($scope){
     }
 
     
-    
-//    $scope.CalculateMinimumPayment = function(){
-//        //payment = (monthlyInterest * initialLoan * (1 + monthlyInterest)^  
-//        var monthlyInterestRate = ($scope.interestRate/100) / 12;
-//        var numerator = monthlyInterestRate * $scope.initialPrinciple * CalcExponent((1 + monthlyInterestRate), $scope.loanTerm);
-//        //alert($scope.loanTerm);
-//        //$scope.minimumMonthlyPayment = $scope.interestRate * $scope.initialPrinciple * CalcExponent((1 + $scope.interestRate), $scope.loanTerm);
-//        $scope.minimumMonthlyPayment = numerator / (CalcExponent((1 + monthlyInterestRate), $scope.loanTerm) - 1);
-//    };
-    
     $scope.GenerateSchedules = function(){
         if($scope.loans.length == 0){
             alert("No debt found! Please enter 1 or more debts.");
         }else{
+            //alert($scope.loans.length);
             var loan;
-         for(var i = 0; i < $scope.loans.length; i++){
-             loan = $scope.loans[i];
-             $scope.Amortization(loan.principle, loan.interestRate, loan.term, loan.minimumMonthlyPayment);
-         }
+             for(var i = 0; i < $scope.loans.length; i++){
+                 //loan = $scope.loans[i];
+                 //alert(loan.minimumMonthlyPayment);
+                 $scope.loans[i].schedule = $scope.Amortization($scope.loans[i]);
+                 //alert($scope.loans[i].schedule.length);
+             }
+            //TESTING
+//             for(var i = 0; i < $scope.loans.length; i++){
+//                var schedule = $scope.loans[i].schedule;
+//                for(var j = 0; j < schedule.length; j++){
+//                    alert(schedule[j].principleRemaining);   
+//                }
+//             }
+            //TESTING
         }    
     }
 
     //on form, make total's minimum value be equal to minimumPayment field, but field is not required
-    $scope.Amortization = function(principle, interestRate, term, totalMonthlyPayment){
-            $scope.schedule = [];
-            if(totalMonthlyPayment === undefined){
-                totalMonthlyPayment = $scope.minimumMonthlyPayment;
-            }
+    $scope.Amortization = function(loan){
+            //alert(loan.principle + ' ' + loan.interestRate + ' ' + loan.term + ' ' + loan.minimumMonthlyPayment);
+            var principle = loan.principle;
+            var interestRate = loan.interestRate;
+            var term = loan.term;
+            var totalMonthlyPayment = loan.minimumMonthlyPayment;
+            var schedule = [];//$scope.schedule = [];
+//            if(totalMonthlyPayment === undefined){
+//                totalMonthlyPayment = $scope.minimumMonthlyPayment;
+//            }
             var monthlyInterestRate = (interestRate/100) / 12;
             var currentDate = new Date();
             currentDate.setMonth(currentDate.getMonth() + 1);
@@ -85,7 +91,7 @@ app.controller('DebtController', ['$scope', function($scope){
             var previousInterestTotal = 0.00;
             //if condition is (principle >= 0), it causes infinite loop
             while(principle >= 0.01){
-                console.log(principle);
+                //console.log(principle);
                 var currentPayment = angular.copy(payment);
                 currentPayment.paymentAmount = totalMonthlyPayment;
                 //$scope.totalPaid = $scope.totalPaid + currentPayment.paymentAmount;
@@ -108,9 +114,9 @@ app.controller('DebtController', ['$scope', function($scope){
                 previousPaymentTotal += currentPayment.paymentAmount;
                 previousInterestTotal += currentPayment.towardInterest;
                 currentDate.setMonth(currentDate.getMonth() + 1);//new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1);
-                $scope.schedule.push(currentPayment);
+                schedule.push(currentPayment);
             }
-
+        return schedule;
     };
     $scope.Init();
 }]);
