@@ -11,6 +11,10 @@ app.controller('DebtController', ['$scope', function($scope){
     $scope.totalPaid = 0;
     $scope.schedule = [];
     $scope.loans = [];
+    $scope.hiddenSchedule = false;
+    $scope.showSchedule = function(){
+      $scope.hiddenSchedule = !$scope.hiddenSchedule;  
+    };
 
     var loan = {
         name:"",

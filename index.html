@@ -13,47 +13,44 @@
                 <dd-loan-entry loans="loans" loan="loan"></dd-loan-entry>
             </div> 
             <br /><br />
-            <button onclick="showTable();" ng-click="GenerateSchedules()">Generate Schedule</button> 
+            <button onclick="showTables();" ng-click="GenerateSchedules()">Generate Schedule</button> 
 <!--            <button onclick="showTable();" ng-click="Amortization(initialPrinciple, interestRate, loanTerm, totalMonthlyPayment)">Generate Schedule</button> -->
             <button ng-click="AddLoan()">Add Another</button>
         </form>
         <div> 
-            <table id="amortizationSchedule">
+            <table id="allSchedules">
                 <tbody ng-repeat="loan in loans">
                     <tr>
-<!--                        <td>{{loan.principle | currency}}</td>-->
                         <td>
-                            <table>
-                                <th>Date</th>  
-                                <th>Payment</th>
-                                <th>principle</th>
-                                <th>interest</th>
-                                <th>Balance</th>
-                                <tbody ng-repeat="payment in loan.schedule">
-                                    <tr>
-                                        <td>{{payment.date}}</td>
-                                        <td>{{payment.paymentAmount | currency}}</td>
-                                        <td>{{payment.towardPrinciple | currency}}</td>
-                                        <td>{{payment.towardInterest | currency}}</td>
-                                        <td>{{payment.principleRemaining | currency}}</td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                            <h2>{{loan.name}}</h2>
+                            <p>{{loan.principle | currency}}</p>
+                            <p>{{loan.interestRate}}</p>
+                            <p>{{loan.term}}</p>
+                            <p>{{loan.minimumMonthlyPayment | currency}}</p>
+                            <p>Total Cost With Interest: </p>
+                            <br />
+                            <div class="showSchedule" ng-click="hiddenSchedule = !hiddenSchedule">Show Payment Schedule</div>
+                            <div ng-show="hiddenSchedule" class="amortizationSchedule">
+                                <table >
+                                    <th>Date</th>  
+                                    <th>Payment</th>
+                                    <th>principle</th>
+                                    <th>interest</th>
+                                    <th>Balance</th>
+                                    <tbody ng-repeat="payment in loan.schedule">
+                                        <tr>
+                                            <td>{{payment.date}}</td>
+                                            <td>{{payment.paymentAmount | currency}}</td>
+                                            <td>{{payment.towardPrinciple | currency}}</td>
+                                            <td>{{payment.towardInterest | currency}}</td>
+                                            <td>{{payment.principleRemaining | currency}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         </td>
                     </tr>
                 </tbody>
-<!--
-                <tbody ng-repeat="payment in loan.schedule">
-                    <tr>
-                        <td>{{payment.date}}</td>
-                        <td>{{payment.paymentAmount | currency}}</td>
-                        <td>{{payment.towardPrinciple | currency}}</td>
-                        <td>{{payment.towardInterest | currency}}</td>
-                        <td>{{payment.principleRemaining | currency}}</td>
-
-                    </tr>
-                </tbody>
--->
             </table>
         </div>
         
@@ -61,12 +58,27 @@
         <script src="Controller.js"></script>
         <script src="ddLoanEntry.js"></script>
         <script>
-            var table = document.getElementById("amortizationSchedule");
-            table.style.visibility = "hidden";
+            //$('.amortizationSchedule table').hide();
+            var tables = document.getElementById("allSchedules");
+            tables.style.visibility = "hidden";
             
-            function showTable(){
-                table.style.visibility = "visible";
+            function showTables(){
+                tables.style.visibility = "visible";
             }
+            
+           
+//            $(function (){
+//                $('.showSchedule').click(function (e) {
+//                    e.preventDefault();
+//                    var $this = $(this).parent().find('table');
+//                    $(".amortizationSchedule table").not($this).hide();
+//                    $this.toggle();
+//                    //$(this).next('table').slideToggle();
+//
+//                    //$(this).parent().siblings().children().next().slideUp();
+//                    //return false;
+//                });
+//            });
         </script>
     </body>
 
