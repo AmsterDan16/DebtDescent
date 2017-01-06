@@ -46,8 +46,8 @@
                                         </tr>
                                     </tbody>
                                 </table>
-                                <p>Total Cost With Interest: </p>
-                                <p>Payoff Date: </p>
+                                <p>Total Cost With Interest: {{RetrieveTotalPaid(loan) | currency}} </p>
+                                <p>Payoff Date: {{RetrievePayoffDate(loan)}}</p>
                             
                             <br />
                             <div class="showSchedule" ng-click="hiddenSchedule = !hiddenSchedule">Show Payment Schedule</div>

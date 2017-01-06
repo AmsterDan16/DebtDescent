@@ -114,6 +114,19 @@ app.controller('DebtController', ['$scope', function($scope){
         }    
     }
 
+    $scope.RetrieveTotalPaid = function(loan){
+        //extract paymentAmounts into array
+        var payments = []
+        for(var i = 0; i < loan.schedule.length; i++){
+            payments.push(loan.schedule[i].paymentAmount);   
+        }
+        return payments.reduce(function(a,b){return a + b});
+        //return loan.schedule.reduce(function(a,b){paymentAmount: a.paymentAmount + b.paymentAmount});   
+    }
+    
+    $scope.RetrievePayoffDate = function(loan){
+        return loan.schedule[loan.schedule.length - 1].date;   
+    }
     //on form, make total's minimum value be equal to minimumPayment field, but field is not required
     $scope.Amortization = function(loan){
             //alert(loan.principle + ' ' + loan.interestRate + ' ' + loan.term + ' ' + loan.minimumMonthlyPayment);
