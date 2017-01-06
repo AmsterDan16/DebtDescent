@@ -1,0 +1,41 @@
+#allSchedules{
+    width:95%;
+    margin:0 auto;
+}
+
+#payoffOptions{
+    margin:0 auto;
+}
+    #payoffOptions .payoffOption{
+        display:inline;
+        width:200px;
+        height:150px;
+        border:1px solid blue;
+        background-color:#ffffff;
+        color:#000000;
+        padding:15px;
+    }
+        #payoffOptions .payoffOption.selected{
+            border:1px solid blue;
+            background-color:blue;
+            color:#ffffff;
+        }
+
+.loanDetail{
+    width:80%;
+    margin:0 auto;
+}
+.loanDetailTable{
+    width:100%;
+    background-color:lightgray;
+}
+    .loanDetailTable td{
+        text-align: center;
+    }
+
+.amortizationSchedule table{
+    width:100%;
+}
+    .amortizationSchedule table td{
+        text-align: center;
+    }

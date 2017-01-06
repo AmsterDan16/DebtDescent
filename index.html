@@ -30,12 +30,25 @@
                 <tbody ng-repeat="loan in loans">
                     <tr>
                         <td>
-                            <h2>{{loan.name}}</h2>
-                            <p>{{loan.principle | currency}}</p>
-                            <p>{{loan.interestRate}}</p>
-                            <p>{{loan.term}}</p>
-                            <p>{{loan.minimumMonthlyPayment | currency}}</p>
-                            <p>Total Cost With Interest: </p>
+                            <h2 class="loanTitle">{{loan.name}}</h2>
+                            <div class="loanDetail">
+                                <table class="loanDetailTable">
+                                    <th>Principle</th>
+                                    <th>APR</th>
+                                    <th>Term</th>
+                                    <th>Min Payment</th>
+                                    <tbody>
+                                        <tr>
+                                            <td>{{loan.principle | currency}}</td>
+                                            <td>{{loan.interestRate}}%</td>
+                                            <td>{{loan.term}} Mos</td>
+                                            <td>{{loan.minimumMonthlyPayment | currency}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <p>Total Cost With Interest: </p>
+                                <p>Payoff Date: </p>
+                            
                             <br />
                             <div class="showSchedule" ng-click="hiddenSchedule = !hiddenSchedule">Show Payment Schedule</div>
                             <div ng-show="hiddenSchedule" class="amortizationSchedule">
@@ -55,6 +68,7 @@
                                         </tr>
                                     </tbody>
                                 </table>
+                            </div>
                             </div>
                         </td>
                     </tr>
