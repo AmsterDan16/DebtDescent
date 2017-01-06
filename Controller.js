@@ -1,20 +1,57 @@
 //load(helpers.js);
 app.controller('DebtController', ['$scope', function($scope){
-    $scope.minimumMonthlyPayment = 0.00;
-    $scope.numberOfMonthsTilPayoff = 0;
-    $scope.initialPrinciple = 0;
-    $scope.interestRate = 0;
-    $scope.loanTerm = 0;
-    $scope.minimumPayment = 0;
-    $scope.totalMonthlyPayment;
+    //$scope.minimumMonthlyPayment = 0.00;
+    //$scope.numberOfMonthsTilPayoff = 0;
+    //$scope.initialPrinciple = 0;
+    //$scope.interestRate = 0;
+    //$scope.loanTerm = 0;
+    //$scope.minimumPayment = 0;
+    //$scope.totalMonthlyPayment;
     $scope.totalInterestPaid = 0;
     $scope.totalPaid = 0;
-    $scope.schedule = [];
+    //$scope.schedule = [];
+    $scope.noneSelected = true;
+    $scope.snowballSelected = false;
+    $scope.avalancheSelected = false;
     $scope.loans = [];
     $scope.hiddenSchedule = false;
     $scope.showSchedule = function(){
-      $scope.hiddenSchedule = !$scope.hiddenSchedule;  
+        $scope.hiddenSchedule = !$scope.hiddenSchedule;  
     };
+    
+    $scope.SwitchToAvalancheMethod = function(){
+        $scope.noneSelected = false;
+        $scope.snowballSelected = false;
+        $scope.avalancheSelected = true;
+    };
+    
+    $scope.SwitchToSnowballMethod = function(){
+        $scope.noneSelected = false;
+        $scope.snowballSelected = true;
+        $scope.avalancheSelected = false;
+    };
+    
+    $scope.SwitchToNoMethod = function(){
+        $scope.noneSelected = true;
+        $scope.snowballSelected = false;
+        $scope.avalancheSelected = false;
+    };
+//    $scope.SwitchPayoffMethod = function(event){
+//        var currIndex = event.target.id;
+//        If(currIndex == "avalanche"){
+//            $scope.noMethodSelected = false;
+//            $scope.snowballMethodSelected = false;
+//            $scope.avalancheSelected = true;
+//        }else if(currIndex == "snowball"){
+//            $scope.noMethodSelected = false;
+//            $scope.snowballMethodSelected = true;
+//            $scope.avalancheSelected = true;
+//        }else{
+//            $scope.noMethodSelected = true;
+//            $scope.snowballMethodSelected = false;
+//            $scope.avalancheSelected = false;
+//        }
+//    };
 
     var loan = {
         name:"",
