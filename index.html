@@ -23,6 +23,7 @@
             <br /><br />
             <button onclick="showTables();" ng-click="GenerateSchedules()">Generate Schedule</button> 
             <button ng-click="AddLoan()">Add Another</button>
+            <button onclick="resetSchedules();" ng-click="ResetLoans()">Reset</button>
         </form>
         <div> 
             <table id="allSchedules">
@@ -87,6 +88,9 @@
                 tables.style.visibility = "visible";
             }
             
+            function resetSchedules(){
+                tables.style.visibility = "hidden";   
+            }
            
 //            $(function (){
 //                $('.showSchedule').click(function (e) {

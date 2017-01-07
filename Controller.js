@@ -116,6 +116,17 @@ app.controller('DebtController', ['$scope', function($scope){
             }
         }
     }
+    
+    $scope.ResetLoans = function(){
+        $scope.noneSelected = true;
+        $scope.snowballSelected = false;
+        $scope.avalancheSelected = false;
+        $scope.loans = [];
+        $scope.unsortedLoans = [];
+        $scope.isSorted = false;
+        $scope.hiddenSchedule = false; 
+        $scope.Init();
+    }
 
     $scope.RetrieveTotalPaid = function(loan){
         //extract paymentAmounts into array
