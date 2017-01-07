@@ -1,19 +1,11 @@
 //load(helpers.js);
 app.controller('DebtController', ['$scope', function($scope){
-    //$scope.minimumMonthlyPayment = 0.00;
-    //$scope.numberOfMonthsTilPayoff = 0;
-    //$scope.initialPrinciple = 0;
-    //$scope.interestRate = 0;
-    //$scope.loanTerm = 0;
-    //$scope.minimumPayment = 0;
-    //$scope.totalMonthlyPayment;
-    $scope.totalInterestPaid = 0;
-    $scope.totalPaid = 0;
-    //$scope.schedule = [];
     $scope.noneSelected = true;
     $scope.snowballSelected = false;
     $scope.avalancheSelected = false;
     $scope.loans = [];
+    $scope.unsortedLoans = [];
+    $scope.isSorted = false;
     $scope.hiddenSchedule = false;
     $scope.showSchedule = function(){
         $scope.hiddenSchedule = !$scope.hiddenSchedule;  
@@ -23,18 +15,21 @@ app.controller('DebtController', ['$scope', function($scope){
         $scope.noneSelected = false;
         $scope.snowballSelected = false;
         $scope.avalancheSelected = true;
+        $scope.OrderByChosenMethod();
     };
     
     $scope.SwitchToSnowballMethod = function(){
         $scope.noneSelected = false;
         $scope.snowballSelected = true;
         $scope.avalancheSelected = false;
+        $scope.OrderByChosenMethod();
     };
     
     $scope.SwitchToNoMethod = function(){
         $scope.noneSelected = true;
         $scope.snowballSelected = false;
         $scope.avalancheSelected = false;
+        $scope.OrderByChosenMethod();
     };
 //    $scope.SwitchPayoffMethod = function(event){
 //        var currIndex = event.target.id;
@@ -95,23 +90,31 @@ app.controller('DebtController', ['$scope', function($scope){
         if($scope.loans.length == 0){
             alert("No debt found! Please enter 1 or more debts.");
         }else{
-            //alert($scope.loans.length);
             var loan;
-             for(var i = 0; i < $scope.loans.length; i++){
-                 //loan = $scope.loans[i];
-                 //alert(loan.minimumMonthlyPayment);
-                 $scope.loans[i].schedule = $scope.Amortization($scope.loans[i]);
-                 //alert($scope.loans[i].schedule.length);
-             }
-            //TESTING
-//             for(var i = 0; i < $scope.loans.length; i++){
-//                var schedule = $scope.loans[i].schedule;
-//                for(var j = 0; j < schedule.length; j++){
-//                    alert(schedule[j].principleRemaining);   
-//                }
-//             }
-            //TESTING
+            for(var i = 0; i < $scope.loans.length; i++){
+                $scope.loans[i].schedule = $scope.Amortization($scope.loans[i]);
+            }
+            //save the original order only after it is first entered
+            if(!$scope.isSorted){
+                $scope.unsortedLoans = $scope.loans.slice(0);
+            }
+            
+            $scope.OrderByChosenMethod();
         }    
+    }
+    
+    $scope.OrderByChosenMethod = function(){
+        if($scope.loans.length > 1){
+            if($scope.avalancheSelected){
+                $scope.loans.sort(function(a,b){return b.interestRate - a.interestRate}); 
+                $scope.isSorted = true;
+            }else if($scope.snowballSelected){
+                $scope.loans.sort(function(a,b){return a.principle - b.principle});  
+                $scope.isSorted = true;
+            }else{
+                $scope.loans = $scope.unsortedLoans.slice(0);   
+            }
+        }
     }
 
     $scope.RetrieveTotalPaid = function(loan){
@@ -121,7 +124,7 @@ app.controller('DebtController', ['$scope', function($scope){
             payments.push(loan.schedule[i].paymentAmount);   
         }
         return payments.reduce(function(a,b){return a + b});
-        //return loan.schedule.reduce(function(a,b){paymentAmount: a.paymentAmount + b.paymentAmount});   
+        //return loan.schedule.reduce(function(a,b){return a.paymentAmount + b.paymentAmount});   
     }
     
     $scope.RetrievePayoffDate = function(loan){
