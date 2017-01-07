@@ -10,14 +10,14 @@
         display:inline;
         width:200px;
         height:150px;
-        border:1px solid blue;
+        border:1px solid cadetblue;
         background-color:#ffffff;
         color:#000000;
         padding:15px;
     }
         #payoffOptions .payoffOption.selected{
-            border:1px solid blue;
-            background-color:blue;
+            border:1px solid cadetblue;
+            background-color: cadetblue;
             color:#ffffff;
         }
 
@@ -32,6 +32,14 @@
     .loanDetailTable td{
         text-align: center;
     }
+.showSchedule{
+    width:60%;
+    height:40px;
+    text-align:center;
+    line-height: 40px;
+    margin:0 auto;
+    background-color: cadetblue
+}
 
 .amortizationSchedule table{
     width:100%;
