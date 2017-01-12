@@ -6,10 +6,11 @@ app.controller('DebtController', ['$scope', function($scope){
     $scope.loans = [];
     $scope.unsortedLoans = [];
     $scope.isSorted = false;
-    $scope.hiddenSchedule = false;
-    $scope.showSchedule = function(){
-        $scope.hiddenSchedule = !$scope.hiddenSchedule;  
-    };
+    $scope.allDebtsHidden = true;
+    $scope.hiddenSchedule = true;
+//    $scope.showSchedule = function(){
+//        $scope.hiddenSchedule = !$scope.hiddenSchedule;  
+//    };
     
     $scope.SwitchToAvalancheMethod = function(){
         $scope.noneSelected = false;
@@ -90,6 +91,7 @@ app.controller('DebtController', ['$scope', function($scope){
         if($scope.loans.length == 0){
             alert("No debt found! Please enter 1 or more debts.");
         }else{
+            $scope.allDebtsHidden = false;
             var loan;
             for(var i = 0; i < $scope.loans.length; i++){
                 $scope.loans[i].schedule = $scope.Amortization($scope.loans[i]);
@@ -124,23 +126,24 @@ app.controller('DebtController', ['$scope', function($scope){
         $scope.loans = [];
         $scope.unsortedLoans = [];
         $scope.isSorted = false;
-        $scope.hiddenSchedule = false; 
+        $scope.allDebtsHidden = true;
+        $scope.hiddenSchedule = true; 
         $scope.Init();
     }
 
-    $scope.RetrieveTotalPaid = function(loan){
-        //extract paymentAmounts into array
-        var payments = []
-        for(var i = 0; i < loan.schedule.length; i++){
-            payments.push(loan.schedule[i].paymentAmount);   
-        }
-        return payments.reduce(function(a,b){return a + b});
-        //return loan.schedule.reduce(function(a,b){return a.paymentAmount + b.paymentAmount});   
-    }
-    
-    $scope.RetrievePayoffDate = function(loan){
-        return loan.schedule[loan.schedule.length - 1].date;   
-    }
+//    $scope.RetrieveTotalPaid = function(loan){
+//        //extract paymentAmounts into array
+//        var payments = []
+//        for(var i = 0; i < loan.schedule.length; i++){
+//            payments.push(loan.schedule[i].paymentAmount);   
+//        }
+//        return payments.reduce(function(a,b){return a + b});
+//        //return loan.schedule.reduce(function(a,b){return a.paymentAmount + b.paymentAmount});   
+//    }
+//    
+//    $scope.RetrievePayoffDate = function(loan){
+//        return loan.schedule[loan.schedule.length - 1].date;   
+//    }
     //on form, make total's minimum value be equal to minimumPayment field, but field is not required
     $scope.Amortization = function(loan){
             //alert(loan.principle + ' ' + loan.interestRate + ' ' + loan.term + ' ' + loan.minimumMonthlyPayment);
