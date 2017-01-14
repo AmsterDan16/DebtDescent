@@ -4,8 +4,8 @@ app.controller('DebtController', ['$scope', function($scope){
     $scope.snowballSelected = false;
     $scope.avalancheSelected = false;
     $scope.loans = [];
-    $scope.unsortedLoans = [];
-    $scope.isSorted = false;
+    //$scope.unsortedLoans = [];
+    //$scope.isSorted = false;
     $scope.allDebtsHidden = true;
     $scope.hiddenSchedule = true;
 //    $scope.showSchedule = function(){
@@ -50,6 +50,7 @@ app.controller('DebtController', ['$scope', function($scope){
 //    };
 
     var loan = {
+        index:0,
         name:"",
         principle:0.00,
         term:0,
@@ -75,6 +76,8 @@ app.controller('DebtController', ['$scope', function($scope){
     
     $scope.AddLoan = function(){
         var additionalLoan = angular.copy(loan);
+        //make the index the length
+        additionalLoan.index = $scope.loans.length;
         $scope.loans.push(additionalLoan);
     }
     /*
@@ -94,12 +97,15 @@ app.controller('DebtController', ['$scope', function($scope){
             $scope.allDebtsHidden = false;
             var loan;
             for(var i = 0; i < $scope.loans.length; i++){
+                //alert($scope.loans[i].name);
                 $scope.loans[i].schedule = $scope.Amortization($scope.loans[i]);
             }
-            //save the original order only after it is first entered
-            if(!$scope.isSorted){
-                $scope.unsortedLoans = $scope.loans.slice(0);
-            }
+            /*save the original order only after it is first entered.
+            *also check for newly added debts
+            */
+//            if(!$scope.isSorted){
+//                $scope.unsortedLoans = $scope.loans.slice(0);
+//            }
             
             $scope.OrderByChosenMethod();
         }    
@@ -109,12 +115,14 @@ app.controller('DebtController', ['$scope', function($scope){
         if($scope.loans.length > 1){
             if($scope.avalancheSelected){
                 $scope.loans.sort(function(a,b){return b.interestRate - a.interestRate}); 
-                $scope.isSorted = true;
+                //$scope.isSorted = true;
             }else if($scope.snowballSelected){
                 $scope.loans.sort(function(a,b){return a.principle - b.principle});  
-                $scope.isSorted = true;
+                //$scope.isSorted = true;
             }else{
-                $scope.loans = $scope.unsortedLoans.slice(0);   
+                $scope.loans.sort(function(a,b){return a.index - b.index});  
+                //$scope.loans = $scope.unsortedLoans.slice(0);
+                //$scope.isSorted = false;
             }
         }
     }
@@ -125,25 +133,13 @@ app.controller('DebtController', ['$scope', function($scope){
         $scope.avalancheSelected = false;
         $scope.loans = [];
         $scope.unsortedLoans = [];
-        $scope.isSorted = false;
+        //$scope.isSorted = false;
         $scope.allDebtsHidden = true;
         $scope.hiddenSchedule = true; 
         $scope.Init();
     }
 
-//    $scope.RetrieveTotalPaid = function(loan){
-//        //extract paymentAmounts into array
-//        var payments = []
-//        for(var i = 0; i < loan.schedule.length; i++){
-//            payments.push(loan.schedule[i].paymentAmount);   
-//        }
-//        return payments.reduce(function(a,b){return a + b});
-//        //return loan.schedule.reduce(function(a,b){return a.paymentAmount + b.paymentAmount});   
-//    }
-//    
-//    $scope.RetrievePayoffDate = function(loan){
-//        return loan.schedule[loan.schedule.length - 1].date;   
-//    }
+
     //on form, make total's minimum value be equal to minimumPayment field, but field is not required
     $scope.Amortization = function(loan){
             //alert(loan.principle + ' ' + loan.interestRate + ' ' + loan.term + ' ' + loan.minimumMonthlyPayment);
@@ -151,10 +147,7 @@ app.controller('DebtController', ['$scope', function($scope){
             var interestRate = loan.interestRate;
             var term = loan.term;
             var totalMonthlyPayment = loan.minimumMonthlyPayment;
-            var schedule = [];//$scope.schedule = [];
-//            if(totalMonthlyPayment === undefined){
-//                totalMonthlyPayment = $scope.minimumMonthlyPayment;
-//            }
+            var schedule = [];
             var monthlyInterestRate = (interestRate/100) / 12;
             var currentDate = new Date();
             currentDate.setMonth(currentDate.getMonth() + 1);
