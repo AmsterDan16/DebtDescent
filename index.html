@@ -27,15 +27,12 @@
             
             <button onclick="resetSchedules();" ng-click="ResetLoans()">Reset</button>
         </form>
-        <div> 
-            <div id="allSchedules">
-                <div ng-repeat="loan in loans">
-                    
-                    <dd-debt></dd-debt>
-                    
-                </div>
-            </div>
+        <div ng-repeat="loan in loans">
+
+            <dd-debt></dd-debt>
+
         </div>
+
 
         <script src="app.js"></script>
         <script src="Controller.js"></script>
