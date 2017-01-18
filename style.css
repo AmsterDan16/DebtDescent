@@ -2,6 +2,12 @@
     font-family: 'Cutive Mono', sans-serif;   
 }
 
+#titleHeader{
+ width:90%;
+ margin:0 auto;
+ margin-bottom: 30px;
+} 
+
 .entry{
  margin:0 auto;
  width:90%;
