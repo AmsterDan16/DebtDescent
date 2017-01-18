@@ -15,7 +15,7 @@
             </div> 
             <br /><br />
             <div id="belowEntry">
-                <button id="addButton" ng-click="AddLoan()">Add Another</button>
+                <button id="addButton" ng-click="AddLoan()">Add</button>
                 <br /><br />
                 <p>Payoff Methods</p>
                 <br />
@@ -32,7 +32,7 @@
         </form>
         <div ng-repeat="loan in loans">
 
-            <dd-debt></dd-debt>
+            <dd-debt ng-show="loan.schedule.length > 0"></dd-debt>
 
         </div>
 

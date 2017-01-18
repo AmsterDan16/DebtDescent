@@ -15,13 +15,13 @@
             <input class="nameInput" type="text" ng-model="loan.name" placeholder="Loan Name">
         </td>
         <td>
-            <input class="amountInput" type="number" min="0" step="any" ng-model="loan.principle" ng-change="CalculateMinimumPayment(loan)">
+            <input class="amountInput" type="number" min="0" step="any" ng-model="loan.principle" ng-change="CalculateMinimumPayment(loan)" required>
         </td>
         <td>
-            <input class="interestInput" type="number" step="any" ng-model="loan.interestRate" ng-change="CalculateMinimumPayment(loan)">
+            <input class="interestInput" type="number" min="0" step="any" ng-model="loan.interestRate" ng-change="CalculateMinimumPayment(loan)" required>
         </td>
         <td>
-            <input class="termInput" type="number" ng-model="loan.term" ng-change="CalculateMinimumPayment(loan)">
+            <input class="termInput" type="number" min="0" ng-model="loan.term" ng-change="CalculateMinimumPayment(loan)" required>
         </td>
         <td>
             {{loan.minimumMonthlyPayment | currency}}
