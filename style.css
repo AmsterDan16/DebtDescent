@@ -1,3 +1,54 @@
+*{
+    font-family: 'Cutive Mono', sans-serif;   
+}
+
+.entry{
+ margin:0 auto;
+ width:90%;
+}
+
+input{
+ height:30px;
+ border-radius:5px;
+ font-size: 15px;
+}
+
+.amountInput{
+ width:150px;   
+}
+
+.interestInput{
+ width:90px;   
+}
+
+.termInput{
+ width:120px;
+}
+
+.loanEntryRow{
+ font-size:15px;   
+}
+
+.removeButton{
+ font-size:20px;
+ width:30px;
+ height:30px;
+ background-color: lightgray;
+ text-align: center;
+ line-height: 30px;
+ border:1px solid #000000;
+}
+
+#belowEntry{
+ width:90%;
+ margin:0 auto;
+}
+
+button{
+    height:30px; 
+    width:75px;
+}
+
 #payoffOptions{
     margin:0 auto;
 }
