@@ -1,11 +1,13 @@
 //load(helpers.js);
-app.controller('DebtController', ['$scope', function($scope){
+app.controller('DebtController', ['$scope',function($scope){
     $scope.noneSelected = true;
     $scope.snowballSelected = false;
     $scope.avalancheSelected = false;
     $scope.loans = [];
     //$scope.unsortedLoans = [];
     //$scope.isSorted = false;
+    $scope.overallMinimumMonthlyPayment = 0.00;
+    $scope.totalMonthlyPayment = 0.00;
     $scope.allDebtsHidden = true;
     $scope.hiddenSchedule = true;
 //    $scope.showSchedule = function(){
@@ -95,11 +97,15 @@ app.controller('DebtController', ['$scope', function($scope){
             alert("No debt found! Please enter 1 or more debts.");
         }else{
             $scope.allDebtsHidden = false;
+            $scope.overallMinimumMonthlyPayment = 0.00;
             var loan;
             for(var i = 0; i < $scope.loans.length; i++){
                 //alert($scope.loans[i].name);
                 $scope.loans[i].schedule = $scope.Amortization($scope.loans[i]);
+                $scope.overallMinimumMonthlyPayment += $scope.loans[i].minimumMonthlyPayment;
             }
+            
+            $scope.totalMonthlyPayment = $scope.overallMinimumMonthlyPayment;
             /*save the original order only after it is first entered.
             *also check for newly added debts
             */

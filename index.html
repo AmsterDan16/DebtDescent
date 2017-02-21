@@ -18,12 +18,22 @@
             <div id="belowEntry">
                 <button id="addButton" ng-click="AddLoan()">Add</button>
                 <br /><br />
-                <p>Payoff Methods</p>
-                <br />
-                <div id="payoffOptions">
-                    <div class="payoffOption" ng-class="{selected: noneSelected}" ng-click="SwitchToNoMethod()">None</div>
-                    <div class="payoffOption" ng-class="{selected: avalancheSelected}" ng-click="SwitchToAvalancheMethod()" title="Pay off highest interest rate first">Avalanche</div>
-                    <div class="payoffOption" ng-class="{selected: snowballSelected}" ng-click="SwitchToSnowballMethod()" title="Pay off lowest principle first">Snowball</div> 
+                <div id="optionsAndExtras">
+                    <div class="extraOption">
+                        <p>Payoff Methods</p>
+                        <br />
+
+                        <div id="payoffOptions">
+                            <div class="payoffOption" ng-class="{selected: noneSelected}" ng-click="SwitchToNoMethod()">None</div>
+                            <div class="payoffOption" ng-class="{selected: avalancheSelected}" ng-click="SwitchToAvalancheMethod()" title="Pay off highest interest rate first">Avalanche</div>
+                            <div class="payoffOption" ng-class="{selected: snowballSelected}" ng-click="SwitchToSnowballMethod()" title="Pay off lowest principle first">Snowball</div> 
+                        </div>
+                    </div>
+                    <div class="extraOption" id="extraPayments">
+                        <p>Total Monthly Payment</p>
+                        <br />
+                        <input class="totalInput" type="number" min="minimumMonthlyPayment" step="any" ng-model="totalMonthlyPayment" value="totalMonthlyPayment">
+                    </div>
                 </div>
                 <br /><br />
                 <button onclick="showTables();" ng-click="GenerateSchedules()">GO!</button> 
