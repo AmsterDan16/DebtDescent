@@ -6,8 +6,7 @@ app.controller('DebtController', ['$scope',function($scope){
     $scope.loans = [];
     //$scope.unsortedLoans = [];
     //$scope.isSorted = false;
-    $scope.overallMinimumMonthlyPayment = 0.00;
-    $scope.totalMonthlyPayment = 0.00;
+    $scope.additionalMonthlyPayment = 0.00;
     $scope.allDebtsHidden = true;
     $scope.hiddenSchedule = true;
 //    $scope.showSchedule = function(){
@@ -97,15 +96,12 @@ app.controller('DebtController', ['$scope',function($scope){
             alert("No debt found! Please enter 1 or more debts.");
         }else{
             $scope.allDebtsHidden = false;
-            $scope.overallMinimumMonthlyPayment = 0.00;
             var loan;
             for(var i = 0; i < $scope.loans.length; i++){
                 //alert($scope.loans[i].name);
                 $scope.loans[i].schedule = $scope.Amortization($scope.loans[i]);
-                $scope.overallMinimumMonthlyPayment += $scope.loans[i].minimumMonthlyPayment;
             }
             
-            $scope.totalMonthlyPayment = $scope.overallMinimumMonthlyPayment;
             /*save the original order only after it is first entered.
             *also check for newly added debts
             */
@@ -114,6 +110,10 @@ app.controller('DebtController', ['$scope',function($scope){
 //            }
             
             $scope.OrderByChosenMethod();
+            //after schedules are set and the loans are sorted, apply the additional payments
+            if($scope.additionalMonthlyPayment > 0.00){
+                $scope.ApplyAdditionalPayments();
+            }
         }    
     }
     
@@ -133,53 +133,98 @@ app.controller('DebtController', ['$scope',function($scope){
         }
     }
     
+    $scope.ApplyAdditionalPayments = function(){
+        var principle, previousPaymentTotal, previousInterestTotal, currentPayment, currentPaymentSchedule;
+
+        for(var i = 0; i < $scope.loans.length; i++){
+            //currentLoan = $scope.loans[i];
+            previousPaymentTotal = 0.00;
+            previousInterestTotal = 0.00;
+            principle = $scope.loans[i].principle;
+            currentPaymentSchedule = $scope.loans[i].schedule;
+            for(var j = 0; j < currentPaymentSchedule.length; j++){
+                currentPayment = $scope.ApplyPayment($scope.loans[i],currentPaymentSchedule[j], $scope.additionalMonthlyPayment, previousInterestTotal, previousPaymentTotal, principle);
+
+                if(currentPayment.principleRemaining <= 0){
+                    currentPayment = $scope.ReconcilePaymentAfterPayoff(currentPayment);
+                    //if not at the end of the payment schedule yet, cut off the remaining payments
+                    if(j < currentPaymentSchedule.length){
+                        $scope.loans[i].schedule.splice(j+1,currentPaymentSchedule.length);
+                    }  
+      
+                    $scope.loans[i].schedule[j] = currentPayment;
+                    break;   
+                }
+                principle = currentPayment.principleRemaining;
+                previousPaymentTotal += currentPayment.paymentAmount;
+                previousInterestTotal += currentPayment.towardInterest;
+                $scope.loans[i].schedule[j] = currentPayment;
+            }
+        }
+    }
+    
     $scope.ResetLoans = function(){
         $scope.noneSelected = true;
         $scope.snowballSelected = false;
         $scope.avalancheSelected = false;
         $scope.loans = [];
         $scope.unsortedLoans = [];
+        $scope.totalMonthlyPayment = 0;
+        $scope.additionalMonthlyPayment = 0;
         //$scope.isSorted = false;
         $scope.allDebtsHidden = true;
         $scope.hiddenSchedule = true; 
         $scope.Init();
     }
 
-
+    $scope.ApplyPayment = function(loan, currentPayment, additional, prevInterest, prevPayment, principle){
+        //TODO: fix the monthly interest. should change, currently doesnt
+        var monthlyInterestRate = (loan.interestRate/100) / 12;
+        var interestRate = loan.interestRate;
+        //var term = loan.term;
+        //var totalMonthlyPayment = loan.minimumMonthlyPayment;
+        
+        currentPayment.paymentAmount = loan.minimumMonthlyPayment + additional;
+        //$scope.totalPaid = $scope.totalPaid + currentPayment.paymentAmount;
+        currentPayment.currentPaidOverall = prevPayment + currentPayment.paymentAmount;
+        currentPayment.towardInterest = loan.principle * monthlyInterestRate;
+        //$scope.totalInterestPaid = $scope.totalInterestPaid + currentPayment.towardInterest;
+        currentPayment.currentInterestPaid = prevInterest + currentPayment.towardInterest;
+        currentPayment.towardPrinciple = currentPayment.paymentAmount - currentPayment.towardInterest;
+        currentPayment.principleRemaining = principle - currentPayment.towardPrinciple;
+        
+        return currentPayment;
+    }
+    
+    //subtract (add) the amount less than zero from the payment amount and recalculate
+    $scope.ReconcilePaymentAfterPayoff = function(payment){
+        payment.paymentAmount = payment.paymentAmount + payment.principleRemaining;
+        payment.currentPaidOverall += payment.principleRemaining;
+        payment.towardPrinciple = payment.paymentAmount - payment.towardInterest;
+        payment.principleRemaining = 0;  
+        return payment;
+    }
+    
+    
     //on form, make total's minimum value be equal to minimumPayment field, but field is not required
     $scope.Amortization = function(loan){
             //alert(loan.principle + ' ' + loan.interestRate + ' ' + loan.term + ' ' + loan.minimumMonthlyPayment);
             var principle = loan.principle;
-            var interestRate = loan.interestRate;
-            var term = loan.term;
-            var totalMonthlyPayment = loan.minimumMonthlyPayment;
             var schedule = [];
-            var monthlyInterestRate = (interestRate/100) / 12;
             var currentDate = new Date();
             currentDate.setMonth(currentDate.getMonth() + 1);
             var previousPaymentTotal = 0.00;
             var previousInterestTotal = 0.00;
+            var currentPayment;
             //if condition is (principle >= 0), it causes infinite loop
             while(principle >= 0.01){
                 //console.log(principle);
-                var currentPayment = angular.copy(payment);
-                currentPayment.paymentAmount = totalMonthlyPayment;
-                //$scope.totalPaid = $scope.totalPaid + currentPayment.paymentAmount;
-                currentPayment.currentPaidOverall = previousPaymentTotal + currentPayment.paymentAmount;
-                currentPayment.towardInterest = principle * monthlyInterestRate;
-                //$scope.totalInterestPaid = $scope.totalInterestPaid + currentPayment.towardInterest;
-                currentPayment.currentInterestPaid = previousInterestTotal + currentPayment.towardInterest;
-                currentPayment.towardPrinciple = currentPayment.paymentAmount - currentPayment.towardInterest;
-                currentPayment.principleRemaining = principle - currentPayment.towardPrinciple;
+                currentPayment = angular.copy(payment);
+                currentPayment = $scope.ApplyPayment(loan, currentPayment, 0, previousInterestTotal, previousPaymentTotal, principle);
                 currentPayment.date = formatDate(currentDate);
                 if(currentPayment.principleRemaining < 0){
-                    //subtract (add) the amount less than zero from the payment amount and recalculate
-                    currentPayment.paymentAmount = currentPayment.paymentAmount + currentPayment.principleRemaining;
-                    currentPayment.currentPaidOverall += currentPayment.principleRemaining;
-                    currentPayment.towardPrinciple = currentPayment.paymentAmount - currentPayment.towardInterest;
-                    currentPayment.principleRemaining = 0;
+                    currentPayment = $scope.ReconcilePaymentAfterPayoff(currentPayment) 
                 }
-
                 principle = currentPayment.principleRemaining;
                 previousPaymentTotal += currentPayment.paymentAmount;
                 previousInterestTotal += currentPayment.towardInterest;
