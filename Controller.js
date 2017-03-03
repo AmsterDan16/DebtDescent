@@ -17,21 +17,21 @@ app.controller('DebtController', ['$scope',function($scope){
         $scope.noneSelected = false;
         $scope.snowballSelected = false;
         $scope.avalancheSelected = true;
-        $scope.OrderByChosenMethod();
+        $scope.GenerateSchedules();//$scope.OrderByChosenMethod();
     };
     
     $scope.SwitchToSnowballMethod = function(){
         $scope.noneSelected = false;
         $scope.snowballSelected = true;
         $scope.avalancheSelected = false;
-        $scope.OrderByChosenMethod();
+        $scope.GenerateSchedules();//$scope.OrderByChosenMethod();
     };
     
     $scope.SwitchToNoMethod = function(){
         $scope.noneSelected = true;
         $scope.snowballSelected = false;
         $scope.avalancheSelected = false;
-        $scope.OrderByChosenMethod();
+        $scope.GenerateSchedules();//$scope.OrderByChosenMethod();
     };
 //    $scope.SwitchPayoffMethod = function(event){
 //        var currIndex = event.target.id;
@@ -117,8 +117,19 @@ app.controller('DebtController', ['$scope',function($scope){
         }    
     }
     
+//    $scope.ResetLoansToOriginalSpecs = function(){
+//        
+//        for(var i = 0; i < $scope.loans.length; i++){
+//               
+//        }
+//    }
+    
     $scope.OrderByChosenMethod = function(){
         if($scope.loans.length > 1){
+            //TODO: REST LOANS TO ORIGINAL SPECS BEFORE SORTING
+            //
+            //
+            //
             if($scope.avalancheSelected){
                 $scope.loans.sort(function(a,b){return b.interestRate - a.interestRate}); 
                 //$scope.isSorted = true;
@@ -137,22 +148,30 @@ app.controller('DebtController', ['$scope',function($scope){
     
     $scope.CascadePaymentRemaindersToNext = function(){
         var addedPaymentForNextLoan = 0;
-        var firstPayment, lastPayment, difference, prevLoan, currentLoan, nextPaymentIndex;
+        var secondToLastPayment, lastPayment, difference, prevLoan, currentLoan, nextPaymentIndex, extraAvailableAmount;
         //start from second loan
         for(var i = 1; i < $scope.loans.length; i++){
             prevLoan = $scope.loans[i-1];
             currentLoan = $scope.loans[i];
-            firstPayment = prevLoan.schedule[0].paymentAmount;
+            //secondToLastPayment = prevLoan.schedule[prevLoan.schedule.length - 2].paymentAmount;
             lastPayment = prevLoan.schedule[prevLoan.schedule.length - 1].paymentAmount;
-            difference = Math.round(firstPayment - lastPayment);
+            //difference = Math.round(secondToLastPayment - lastPayment);
             //find when to roll over the leftover amount
             nextPaymentIndex = $scope.FindIndexOfObjectWithProperty(currentLoan.schedule, "date", prevLoan.schedule[prevLoan.schedule.length - 1].date);
-            //apply the difference in last payment to 
-            if(difference > 0){
-                $scope.loans[i] = $scope.ApplyAdditionalAmountToLoan(difference, currentLoan, nextPaymentIndex, nextPaymentIndex + 1);      
+            //find the total amount leftover from previous loans available to apply to current loans
+            extraAvailableAmount = Math.round(($scope.FindSumOfPreviousPayments(i) + $scope.additionalMonthlyPayment) - lastPayment);
+      
+            if(extraAvailableAmount > 0){
+                //apply the difference in total extra available money sent to the last payment of the previous loan to the payment 
+                //in the current loan of the same month
+                $scope.loans[i] = $scope.ApplyPaymentToLoan(extraAvailableAmount, currentLoan, nextPaymentIndex, nextPaymentIndex + 1); 
+                //then apply the standard cascaded payment to the rest of the payments
+                $scope.loans[i] = $scope.ApplyPaymentToLoan($scope.FindSumOfPreviousPayments(i), currentLoan, nextPaymentIndex + 1, currentLoan.schedule.length -1);   
+            }else{
+                //apply the total previous loan payment to the next loan at all indices after the previous loans are paid off
+                $scope.loans[i] = $scope.ApplyPaymentToLoan($scope.FindSumOfPreviousPayments(i), currentLoan, nextPaymentIndex, currentLoan.schedule.length -1); 
             }
-            //apply the total previous loan payment to the next loan at all indices after the 
-            $scope.loans[i] = $scope.ApplyAdditionalAmountToLoan($scope.FindSumOfPreviousPayments(i), currentLoan, nextPaymentIndex + 1, currentLoan.schedule.length -1);
+            
         }
     }
     
@@ -167,7 +186,7 @@ app.controller('DebtController', ['$scope',function($scope){
     }
 
     
-    $scope.ApplyAdditionalAmountToLoan = function(amount, loan, startIndex, endIndex){
+    $scope.ApplyPaymentToLoan = function(amount, loan, startIndex, endIndex){
         var previousPaymentInterest, previousPaymentTotal, principle, currentPayment;
         for(var j = startIndex; j < endIndex; j++){
             if(j == 0){
@@ -237,7 +256,7 @@ app.controller('DebtController', ['$scope',function($scope){
 //                previousInterestTotal += currentPayment.towardInterest;
 //                $scope.loans[i].schedule[j] = currentPayment;
 //            }
-            $scope.loans[i] = $scope.ApplyAdditionalAmountToLoan($scope.loans[i], additional, startDateIndex);
+            $scope.loans[i] = $scope.ApplyPaymentToLoan($scope.loans[i], additional, startDateIndex);
             //the next loan will begin the additional payments after the currentLoan's end month
             //TODO: calculate the extra payments that will go into the next loan
             nextExtraPaymentStartDate = $scope.loans[i].schedule[$scope.loans[i].schedule.length - 1].date;
