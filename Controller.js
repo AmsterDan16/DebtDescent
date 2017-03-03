@@ -54,7 +54,7 @@ app.controller('DebtController', ['$scope',function($scope){
         index:0,
         name:"",
         principle:0.00,
-        term:0,
+        term:1,
         interestRate:0.00,
         minimumMonthlyPayment:0.00,
         schedule: []
@@ -169,7 +169,7 @@ app.controller('DebtController', ['$scope',function($scope){
                 $scope.loans[i] = $scope.ApplyPaymentToLoan($scope.FindSumOfPreviousPayments(i), currentLoan, nextPaymentIndex + 1, currentLoan.schedule.length -1);   
             }else{
                 //apply the total previous loan payment to the next loan at all indices after the previous loans are paid off
-                $scope.loans[i] = $scope.ApplyPaymentToLoan($scope.FindSumOfPreviousPayments(i), currentLoan, nextPaymentIndex, currentLoan.schedule.length -1); 
+                $scope.loans[i] = $scope.ApplyPaymentToLoan($scope.FindSumOfPreviousPayments(i), currentLoan, nextPaymentIndex + 1, currentLoan.schedule.length -1); 
             }
             
         }
