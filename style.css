@@ -56,6 +56,15 @@ button{
  font-size:15px;
 }
 
+.calcButton{
+ width:130px; 
+}
+
+.recalcButton{
+ width:130px;
+ border:1px solid red;
+}
+
 #optionsAndExtras{
  width:100%; 
  margin-bottom:130px;
@@ -68,50 +77,67 @@ button{
 }
 
 #payoffOptions{
-    margin:0 auto;
+ margin:0 auto;
 }
     #payoffOptions .payoffOption{
-        display:inline;
-        width:200px;
-        height:150px;
-        border:1px solid cadetblue;
-        background-color:#ffffff;
-        color:#000000;
-        padding:15px;
+     display:inline;
+     width:200px;
+     height:150px;
+     border:1px solid cadetblue;
+     background-color:#ffffff;
+     color:#000000;
+     padding:15px;
     }
         #payoffOptions .payoffOption.selected{
-            border:1px solid cadetblue;
-            background-color: cadetblue;
-            color:#ffffff;
+         border:1px solid cadetblue;
+         background-color: cadetblue;
+         color:#ffffff;
         }
+
+#cascadeOption{
+ margin-top:20px;
+ margin-bottom:20px;
+ width:100%;
+}
+#cascadeCheckBox{
+ width:30px;
+ height:30px;
+ border:1px solid cadetblue;
+}
+
+.cascadeChecked{
+ background-image:url("images/check.png");   
+ background-size:contain;
+}
+
 .allSchedules{
-    width:95%;
-    margin:0 auto;
+ width:95%;
+ margin:0 auto;
 }
 
 .loanDetail{
-    width:80%;
-    margin:0 auto;
+ width:80%;
+ margin:0 auto;
 }
 .loanDetailTable{
-    width:100%;
-    background-color:lightgray;
+ width:100%;
+ background-color:lightgray;
 }
     .loanDetailTable td{
-        text-align: center;
+     text-align: center;
     }
 .showSchedule{
-    width:60%;
-    height:40px;
-    text-align:center;
-    line-height: 40px;
-    margin:0 auto;
-    background-color: cadetblue;
+ width:60%;
+ height:40px;
+ text-align:center;
+ line-height: 40px;
+ margin:0 auto;
+ background-color: cadetblue;
 }
 
 .amortizationSchedule table{
-    width:100%;
+ width:100%;
 }
     .amortizationSchedule table td{
-        text-align: center;
+     text-align: center;
     }

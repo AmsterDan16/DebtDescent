@@ -34,9 +34,14 @@
                         <br />
                         <input class="totalInput" type="number" min="0" step="any" ng-model="additionalMonthlyPayment" value="additionalMonthlyPayment">
                     </div>
+                    <div id="cascadeOption" class="extraOption">
+                        <p>Cascade Payments After Payoff</p>
+                        <div id="cascadeCheckBox" ng-class="{'cascadeChecked': cascadePayments}" ng-click="ToggleCascade()"></div>
+                    </div>
                 </div>
                 <br /><br />
-                <button onclick="showTables();" ng-click="GenerateSchedules()">GO!</button> 
+                <!--TODO figure out recalc and statechange-->
+                <button class="calcButton" ng-class="{'recalcButton': recalcNeeded}" onclick="showTables();" ng-click="GenerateSchedules()">{{calcButtonText}}</button> 
 
                 <button onclick="resetSchedules();" ng-click="ResetLoans()">Reset</button>
             </div>
