@@ -29,11 +29,13 @@
                             <div class="payoffOption" ng-class="{selected: snowballSelected}" ng-click="SwitchToSnowballMethod()" title="Pay off lowest principle first">Snowball</div> 
                         </div>
                     </div>
+<!--
                     <div class="extraOption" id="extraPayments">
                         <p>Additional Monthly Payment</p>
                         <br />
                         <input class="totalInput" type="number" min="0" step="any" ng-model="additionalMonthlyPayment" value="additionalMonthlyPayment">
                     </div>
+-->
                     <div id="cascadeOption" class="extraOption">
                         <p>Cascade Payments After Payoff</p>
                         <div id="cascadeCheckBox" ng-class="{'cascadeChecked': cascadePayments}" ng-click="ToggleCascade()"></div>
