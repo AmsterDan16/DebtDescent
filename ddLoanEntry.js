@@ -1,4 +1,3 @@
-//load(helpers.js);
 app.directive('ddLoanEntry', function(){
     return {
         restrict:'E',
@@ -6,9 +5,13 @@ app.directive('ddLoanEntry', function(){
             loan: '=loan',
             loans: '=loans'
         },
-        //replace:true,
         templateUrl:'ddLoanEntry.html',
         link: function(scope, element, attrs){
+            /*
+                in: loan
+                out: 
+                purpose: calculate the min monthly payment
+            */
             scope.CalculateMinimumPayment = function(loan){
                 var numerator;
                 var monthlyInterestRate = (loan.interestRate/100) / 12;
@@ -32,7 +35,8 @@ app.directive('ddLoanEntry', function(){
             };
             
             /*
-                in: base int, and power int
+                in: base int
+                in: power int
                 out: base raised to the power input
                 purpose: calculate and return base^power
             */

@@ -18,10 +18,10 @@
             <input class="amountInput" type="number" min="0" step="any" ng-model="loan.principle" ng-change="CalculateMinimumPayment(loan)" required>
         </td>
         <td>
-            <input class="interestInput" type="number" min="0" step="any" ng-model="loan.interestRate" ng-change="CalculateMinimumPayment(loan)" required>
+            <input class="interestInput" type="number" min="0" max="99" step="any" ng-model="loan.interestRate" ng-change="CalculateMinimumPayment(loan)" required>
         </td>
         <td>
-            <input class="termInput" type="number" min="0" ng-model="loan.term" ng-change="CalculateMinimumPayment(loan)" required>
+            <input class="termInput" type="number" min="0" max="10000" ng-model="loan.term" ng-change="CalculateMinimumPayment(loan)" required>
         </td>
         <td>
             {{loan.minimumMonthlyPayment | currency}}
