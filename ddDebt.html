@@ -1,109 +1,46 @@
-<!--
-<tr>
-    <td>
-        <div ng-click='showSchedule()'>hrey</div> 
-        <div ng-hide='hiddenSchedule' >{{hiddenSchedule}}</div>
-    </td>
-</tr>
--->
-<!--
-<div>
-    <table>
-        <tr>
-            <td>
--->
-                <div class="allSchedules" ng-hide='allDebtsHidden'>
-                    <h2 class="loanTitle">{{loan.name}}</h2>
-        
-                    <div class="loanDetail">
-                        <table class="loanDetailTable">
-                            <th>Principle</th>
-                            <th>APR</th>
-                            <th>Term</th>
-                            <th>Min Payment</th>
-                            <tbody>
-                                <tr>
-                                    <td>{{loan.principle | currency}}</td>
-                                    <td>{{loan.interestRate}}%</td>
-                                    <td>{{loan.term}} Mos</td>
-                                    <td>{{loan.minimumMonthlyPayment | currency}}</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                        <p>Total Cost With Interest: {{RetrieveTotalPaid(loan) | currency}} </p>
-                        <p>Payoff Date: {{RetrievePayoffDate(loan)}}</p>
 
-                        <br />
-                        <div class="showSchedule" ng-click="showSchedule()">Show Payment Schedule</div> 
-                        <div ng-hide="hiddenSchedule" class="amortizationSchedule">
-                            <table >
-                                <th>Date</th>  
-                                <th>Payment</th>
-                                <th>principle</th>
-                                <th>interest</th>
-                                <th>Balance</th>
-                                <tbody ng-repeat="payment in loan.schedule">
-                                    <tr>
-                                        <td>{{payment.date}}</td>
-                                        <td>{{payment.paymentAmount | currency}}</td>
-                                        <td>{{payment.towardPrinciple | currency}}</td>
-                                        <td>{{payment.towardInterest | currency}}</td>
-                                        <td>{{payment.principleRemaining | currency}}</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-        
-                </div>
-<!--
-            </td>
-        </tr>
-    </table>
-</div>
--->
-<!--
-<tr>
-    <td>
-        <h2 class="loanTitle">{{loan.name}}</h2>
-        <div class="loanDetail">
-            <table class="loanDetailTable">
-                <th>Principle</th>
-                <th>APR</th>
-                <th>Term</th>
-                <th>Min Payment</th>
-                <tbody>
+<div class="allSchedules" ng-hide='allDebtsHidden'>
+    <h2 class="loanTitle">{{loan.name}}</h2>
+
+    <div class="loanDetail">
+        <table class="loanDetailTable">
+            <th>Principle</th>
+            <th>APR</th>
+            <th>Term</th>
+            <th>Min Payment</th>
+            <tbody>
+                <tr>
+                    <td>{{loan.principle | currency}}</td>
+                    <td>{{loan.interestRate}}%</td>
+                    <td>{{loan.term}} Mos</td>
+                    <td>{{loan.minimumMonthlyPayment | currency}}</td>
+                </tr>
+            </tbody>
+        </table>
+        <p>Total Cost With Interest: {{RetrieveTotalPaid(loan) | currency}} </p>
+        <p>Payoff Date: {{RetrievePayoffDate(loan)}}</p>
+
+        <br />
+        <div class="showSchedule" ng-click="showSchedule()">Show Payment Schedule</div> 
+        <div ng-hide="hiddenSchedule" class="amortizationSchedule">
+            <table >
+                <th>Date</th>  
+                <th>Payment</th>
+                <th>principle</th>
+                <th>interest</th>
+                <th>Balance</th>
+                <tbody ng-repeat="payment in loan.schedule">
                     <tr>
-                        <td>{{loan.principle | currency}}</td>
-                        <td>{{loan.interestRate}}%</td>
-                        <td>{{loan.term}} Mos</td>
-                        <td>{{loan.minimumMonthlyPayment | currency}}</td>
+                        <td>{{payment.date}}</td>
+                        <td>{{payment.paymentAmount | currency}}</td>
+                        <td>{{payment.towardPrinciple | currency}}</td>
+                        <td>{{payment.towardInterest | currency}}</td>
+                        <td>{{payment.principleRemaining | currency}}</td>
                     </tr>
                 </tbody>
             </table>
-            <p>Total Cost With Interest: {{RetrieveTotalPaid(loan) | currency}} </p>
-            <p>Payoff Date: {{RetrievePayoffDate(loan)}}</p>
-
-            <br />
-            <div class="showSchedule">Show Payment Schedule</div> 
-            <div class="amortizationSchedule">
-                <table >
-                    <th>Date</th>  
-                    <th>Payment</th>
-                    <th>principle</th>
-                    <th>interest</th>
-                    <th>Balance</th>
-                    <tbody ng-repeat="payment in loan.schedule">
-                        <tr>
-                            <td>{{payment.date}}</td>
-                            <td>{{payment.paymentAmount | currency}}</td>
-                            <td>{{payment.towardPrinciple | currency}}</td>
-                            <td>{{payment.towardInterest | currency}}</td>
-                            <td>{{payment.principleRemaining | currency}}</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
         </div>
-    </td>
-</tr>-->
+    </div>
+
+</div>
+
